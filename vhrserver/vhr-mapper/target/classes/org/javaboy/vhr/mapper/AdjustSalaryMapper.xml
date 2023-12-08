@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.javaboy.vhr.mapper.AdjustSalaryMapper" >
+  <sql id="column">id, employee_id, create_date, salary, reason, remark</sql>
+  <resultMap id="BaseResultMap" type="org.javaboy.vhr.model.AdjustSalaryView" >
+    <id column="id" property="id"/>
+    <result column="employee_id" property="employeeId"/>
+    <result column="create_date" property="createDate"/>
+    <result column="salary" property="salary"/>
+    <result column="reason" property="reason" />
+    <result column="remark" property="remark"/>
+    <association property="employee" column="employee_id"
+                 select="org.javaboy.vhr.mapper.EmployeeMapper.selectByPrimaryKey"/>
+  </resultMap>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select a.id, a.employee_id, a.create_date, a.salary, a.reason, a.remark
+    from adjust_salary as a
+    join employee as e on e.id = a.employee_id
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select <include refid="column" />
+    from adjust_salary
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from adjust_salary
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insertAdjustSalary" parameterType="org.javaboy.vhr.model.InsertAdjustSalary" >
+    insert into adjust_salary
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="employeeId != null" >
+        employee_id,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="salary != null" >
+        salary,
+      </if>
+      <if test="reason != null" >
+        reason,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="employeeId != null" >
+        #{employeeId,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=DATE},
+      </if>
+      <if test="salary != null" >
+        #{salary,jdbcType=INTEGER},
+      </if>
+      <if test="reason != null" >
+        #{reason,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="org.javaboy.vhr.model.UploadAdjustSalary" >
+    update adjust_salary
+    <set >
+      <if test="employeeId != null" >
+        employee_id = #{employeeId,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=DATE},
+      </if>
+      <if test="salary != null" >
+        salary = #{salary,jdbcType=INTEGER},
+      </if>
+      <if test="reason != null" >
+        reason = #{reason,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+</mapper>

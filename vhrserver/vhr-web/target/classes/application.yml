@@ -1,0 +1,32 @@
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    username: root
+    password: 1614969957
+    url: jdbc:mysql://139.159.149.164:3306/vhr?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai
+  rabbitmq:
+    username: rabbitmq
+    password: rabbitmq
+    host: 139.159.149.164
+    publisher-confirms: true
+    publisher-returns: true
+  redis:
+    host: 139.159.149.164
+    database: 0
+    port: 8092
+    password: 1614969957
+  cache:
+    cache-names: menus_cache
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+server:
+  port: 8081
+  compression:
+    enabled: true
+fastdfs:
+  nginx:
+    host: http://139.159.149.164:8097/
+debug: true
+
+# 分页配置参数

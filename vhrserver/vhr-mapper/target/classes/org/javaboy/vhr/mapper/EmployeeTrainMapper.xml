@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.javaboy.vhr.mapper.EmployeeTrainMapper">
+    <sql id="column"> id, employee_id, create_data, train_content, remark</sql>
+    <resultMap id="BaseResultMap" type="org.javaboy.vhr.model.EmployeeTrainView">
+        <id column="id" property="id"/>
+        <result column="employee_id" property="employeeId"/>
+        <result column="create_data" property="createData"/>
+        <result column="train_content" property="trainContent"/>
+        <result column="remark" property="remark"/>
+        <association column="employee_id" property="employee"
+                     select="org.javaboy.vhr.mapper.EmployeeMapper.selectByPrimaryKey" />
+    </resultMap>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="column"/>
+        from employee_train
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="column"/>
+        from employee_train
+        where id = #{id}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from employee_train
+        where id = #{id}
+    </delete>
+    <insert id="insertEmployeeTrain" parameterType="org.javaboy.vhr.model.InsertEmployeeTrain">
+        insert into employee_train
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="employeeId != null">
+                employee_id,
+            </if>
+            <if test="createData != null">
+                create_data,
+            </if>
+            <if test="trainContent != null">
+                train_content,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="employeeId != null">
+                #{employeeId,jdbcType=INTEGER},
+            </if>
+            <if test="createData != null">
+                #{createData,jdbcType=DATE},
+            </if>
+            <if test="trainContent != null">
+                #{trainContent,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="org.javaboy.vhr.model.Employeetrain">
+        update employee_train
+        <set>
+            <if test="employeeId != null">
+                employee_id = #{employeeId,jdbcType=INTEGER},
+            </if>
+            <if test="createData != null">
+                create_data = #{createData,jdbcType=DATE},
+            </if>
+            <if test="trainContent != null">
+                train_content = #{trainContent,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+</mapper>
