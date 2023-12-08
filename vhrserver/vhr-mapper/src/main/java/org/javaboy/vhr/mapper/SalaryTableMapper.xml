@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.javaboy.vhr.mapper.SalaryTableMapper">
+    <sql id="column">employee_name, work_id, department_name, job_level_name, punishment, reward, tax</sql>
+    <resultMap id="baseResultMap" type="org.javaboy.vhr.model.SalaryTableView">
+        <result column="employee_name" property="employeeName"/>
+        <result column="workID" property="workId"/>
+        <result column="department_name" property="departmentName"/>
+        <result column="job_level_name" property="jobLevelName"/>
+        <result column="punishment" property="punishment"/>
+        <result column="reward" property="reward"/>
+        <result column="tax" property="tax"/>
+        <result column="wages_payable" property="wagesPayable"/>
+        <association property="salary" resultMap="org.javaboy.vhr.mapper.SalaryMapper.BaseResultMap"/>
+    </resultMap>
+    <select id="selectAll"
+            resultMap="baseResultMap"
+            parameterType="org.javaboy.vhr.model.SalaryTableSearch">
+        select
+            employee_name,
+            work_id,
+            department_name,
+            job_level_name,
+            punishment,
+            reward,
+            tax,
+            id,
+            NAME,
+            basicSalary,
+            bonus,
+            lunchSalary,
+            trafficSalary,
+            allSalary,
+            pensionBase,
+            pensionPer,
+            createDate,
+            medicalBase,
+            medicalPer,
+            accumulationFundBase,
+            accumulationFundPer,
+        if((allSalary - tax + reward + punishment) > 0, (allSalary - tax + reward + punishment), 0) as wages_payable
+        from (
+        select
+        emp.`name` as employee_name, emp.workID as work_id,
+        dep.`name` as department_name,
+        jl.`name` as job_level_name,
+        sal.*,
+        if(year(ads.create_date) = year(#{date}) and month(ads.create_date) = month(#{date}),
+            if(ads.salary &gt; 0, ads.salary, 0), 0) as reward,
+        if(year(ads.create_date) = year(#{date}) and month(ads.create_date) = month(#{date}),
+            if(ads.salary &lt; 0, ads.salary, 0), 0) as punishment,
+        case
+        when allSalary &lt;= 3000 then allSalary * 0.03
+        when allSalary &lt;= 12000 then allSalary * 0.10
+        when allSalary &lt;= 25000 then allSalary * 0.20
+        when allSalary &lt;= 35000 then allSalary * 0.25
+        when allSalary &lt;= 55000 then allSalary * 0.30
+        when allSalary &lt;= 80000 then allSalary * 0.35
+        when allSalary &gt; 80000 then allSalary * 0.45
+        end as tax
+        from employee as emp
+        join employee_salary_merge as ems on ems.employee_id = emp.id
+        join salary as sal on sal.id = ems.salary_id
+        join department as dep on dep.id = emp.departmentId
+        join job_level as jl on jl.id = emp.jobLevelId
+        left join adjust_salary as ads on ads.employee_id = emp.id
+        <where>
+            <if test="workId != null and workId != ''">
+                work_id = #{workId}
+            </if>
+        </where>
+        ) as t
+    </select>
+</mapper>

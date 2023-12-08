@@ -1,27 +1,100 @@
 package org.javaboy.vhr.mapper;
 
+import org.apache.ibatis.annotations.Param;
 import org.javaboy.vhr.model.Department;
+import org.javaboy.vhr.model.UploadDepartment;
 
 import java.util.List;
 
+/**
+ * 部门 数据层
+ *
+ * @author boluo
+ */
 public interface DepartmentMapper {
+
+    /**
+     * 通过部门id 删除部门
+     *
+     * @param id 部门id
+     * @return 结果
+     */
     int deleteByPrimaryKey(Integer id);
 
-    int insert(Department record);
+    /**
+     * 新增部门
+     *
+     * @param department 部门信息
+     * @return 结果
+     */
+    int insertDepartment(Department department);
 
-    int insertSelective(Department record);
-
+    /**
+     * 通过部门id 查询部门
+     *
+     * @param id 部门id
+     * @return 部门信息
+     */
     Department selectByPrimaryKey(Integer id);
 
-    int updateByPrimaryKeySelective(Department record);
+    /**
+     * 修改部门
+     *
+     * @param uploadDepartment 部门信息
+     * @return 结果
+     */
+    int updateByPrimaryKey(UploadDepartment uploadDepartment);
 
-    int updateByPrimaryKey(Department record);
+    /**
+     * 通过部门父id 查询所有子部门
+     *
+     * @param id 父部门id
+     * @return 子部门集合
+     */
+    List<Department> selectByParentId(@Param("id") Integer id);
 
-    List<Department> getAllDepartmentsByParentId(Integer pid);
+    /**
+     * 查询部门最后插入id
+     *
+     * @return 部门id
+     */
+    int lastInsertId();
 
-    void addDep(Department dep);
+    /**
+     * 根据父部门id 查询所有部门数
+     *
+     * @param id 父部门id
+     * @return 部门个数
+     */
+    int selectCountByParentId(@Param("id") Integer id);
 
-    void deleteDepById(Department dep);
+    /**
+     * 查询所有开启的部门
+     *
+     * @return 部门集合
+     */
+    List<Department> selectAllDepWithDisabled();
 
-    List<Department> getAllDepartmentsWithOutChildren();
+    /**
+     * 通过部门路径 删除部门
+     *
+     * @param path 部门路径
+     * @return 结果
+     */
+    int deleteByDepPath(@Param("depPath") String depPath);
+
+    /**
+     * 通过部门名称 查询部门
+     *
+     * @param name 部门名称
+     * @return 部门集合
+     */
+    List<Department> selectByName(@Param("name") String name);
+
+    /**
+     * 查询所有部门
+     *
+     * @return 部门集合
+     */
+    List<Department> selectAll();
 }

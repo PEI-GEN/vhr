@@ -1,30 +1,26 @@
 package org.javaboy.vhr.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-import java.io.Serializable;
-import java.util.List;
+import javax.validation.constraints.NotNull;
 
 /**
- * 部门 实体
- *
  * @author boluo
+ * @date 2023/11/08
  */
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @Accessors(chain = true)
-public class Department implements Serializable {
+public class UploadDepartment {
     /**
      * 主键
      */
+    @NotNull(message = "id不能为空")
     private Integer id;
     /**
      * 部门名称
      */
+    @NotNull(message = "部门名称不能为空")
     private String name;
     /**
      * 父部门id
@@ -33,6 +29,7 @@ public class Department implements Serializable {
     /**
      * 部门路径
      */
+    @NotNull(message = "部门路径不能为空")
     private String depPath;
     /**
      * 是否开启
@@ -42,12 +39,4 @@ public class Department implements Serializable {
      * 是否父部门
      */
     private Boolean isParent;
-    /**
-     * 子部门
-     */
-    private List<Department> children;
-
-    public Department(String cellValue) {
-
-    }
 }

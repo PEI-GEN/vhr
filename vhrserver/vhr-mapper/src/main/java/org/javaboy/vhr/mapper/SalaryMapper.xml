@@ -1,102 +1,144 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="org.javaboy.vhr.mapper.SalaryMapper">
+    <sql id="column">
+        id, name, basic_salary, bonus, lunch_salary, traffic_salary, all_salary, pension_base, pension_per,
+    create_date, medical_base, medical_per, accumulation_fund_base, accumulation_fund_per
+    </sql>
+    <resultMap id="SalaryConfigViewMap" type="org.javaboy.vhr.model.SalaryConfigView">
+        <result property="employeeId" column="employee_id"/>
+        <result property="employeeName" column="employee_name"/>
+        <result property="workId" column="work_id"/>
+        <result property="email" column="email"/>
+        <result property="phone" column="phone"/>
+        <result property="departmentId" column="department_id"/>
+        <result property="departmentName" column="department_name"/>
+        <association property="salary" resultMap="org.javaboy.vhr.mapper.SalaryMapper.BaseResultMap"/>
+    </resultMap>
     <resultMap id="BaseResultMap" type="org.javaboy.vhr.model.Salary">
         <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
         <result column="basicSalary" property="basicSalary" jdbcType="INTEGER"/>
         <result column="bonus" property="bonus" jdbcType="INTEGER"/>
-        <result column="lunchSalary" property="lunchSalary" jdbcType="INTEGER"/>
-        <result column="trafficSalary" property="trafficSalary" jdbcType="INTEGER"/>
-        <result column="allSalary" property="allSalary" jdbcType="INTEGER"/>
-        <result column="pensionBase" property="pensionBase" jdbcType="INTEGER"/>
-        <result column="pensionPer" property="pensionPer" jdbcType="REAL"/>
-        <result column="createDate" property="createDate" jdbcType="TIMESTAMP"/>
-        <result column="medicalBase" property="medicalBase" jdbcType="INTEGER"/>
-        <result column="medicalPer" property="medicalPer" jdbcType="REAL"/>
-        <result column="accumulationFundBase" property="accumulationFundBase" jdbcType="INTEGER"/>
-        <result column="accumulationFundPer" property="accumulationFundPer" jdbcType="REAL"/>
-        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="lunch_salary" property="lunchSalary" jdbcType="INTEGER"/>
+        <result column="traffic_salary" property="trafficSalary" jdbcType="INTEGER"/>
+        <result column="all_salary" property="allSalary" jdbcType="INTEGER"/>
+        <result column="pension_base" property="pensionBase" jdbcType="INTEGER"/>
+        <result column="pension_per" property="pensionPer" jdbcType="REAL"/>
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP"/>
+        <result column="medical_base" property="medicalBase" jdbcType="INTEGER"/>
+        <result column="medical_per" property="medicalPer" jdbcType="REAL"/>
+        <result column="accumulation_fund_base" property="accumulationFundBase" jdbcType="INTEGER"/>
+        <result column="accumulation_fund_per" property="accumulationFundPer" jdbcType="REAL"/>
     </resultMap>
-    <sql id="Base_Column_List">
-    id, basicSalary, bonus, lunchSalary, trafficSalary, allSalary, pensionBase, pensionPer, 
-    createDate, medicalBase, medicalPer, accumulationFundBase, accumulationFundPer, name
-  </sql>
-    <select id="getAllSalaries" resultMap="BaseResultMap">
+    <resultMap id="EmpAndSalary" type="org.javaboy.vhr.model.Employee">
+        <id property="id" column="employee_id" jdbcType="INTEGER"/>
+        <result property="name" column="employee_name" jdbcType="VARCHAR"/>
+        <result property="workID" column="work_id" jdbcType="CHAR"/>
+        <result property="email" column="email" jdbcType="VARCHAR"/>
+        <result property="phone" column="phone" jdbcType="VARCHAR"/>
+        <association property="department" javaType="org.javaboy.vhr.model.Department">
+            <id property="id" column="dep_id" jdbcType="INTEGER"/>
+            <result property="name" column="dep_name" jdbcType="VARCHAR"/>
+        </association>
+        <association property="salary" resultMap="org.javaboy.vhr.mapper.SalaryMapper.BaseResultMap"/>
+    </resultMap>
+
+
+    <select id="selectEmployeeAndSalary" resultMap="SalaryConfigViewMap">
         select
-        <include refid="Base_Column_List"/>
+        emp.id as employee_id, emp.name as employee_name, emp.email as email, emp.phone as phone, emp.work_id as work_id,
+        dep.id   as department_id,
+        dep.name as department_name,
+        sa.*
+        from employee emp
+        LEFT JOIN employee_salary_merge esm on emp.id = esm.employee_id
+        LEFT JOIN salary sa on esm.salary_id = sa.id
+        LEFT JOIN department dep on emp.department_id = dep.id
+    </select>
+    <select id="countSalaryWithEmployee" resultType="Integer">
+        select count(*)
+        from employee emp
+                 LEFT JOIN employee_salary_merge esm on emp.id = esm.employee_id
+                 LEFT JOIN salary sa on esm.salary_id = sa.id
+                 LEFT JOIN department dep on emp.department_id = dep.id
+    </select>
+    <delete id="deleteMany">
+        delete from salary
+        where id in
+        <foreach collection="ids" separator="," open="(" close=")" item="id">
+            #{id}
+        </foreach>
+    </delete>
+    <select id="selectAll" resultMap="BaseResultMap">
+        select <include refid="column"/>
         from salary
     </select>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-        select
-        <include refid="Base_Column_List"/>
+        select <include refid="column"/>
         from salary
         where id = #{id,jdbcType=INTEGER}
     </select>
+    <select id="selectEmployeeSalaryByWorkId" resultMap="SalaryConfigViewMap">
+        select
+        emp.id as employee_id, emp.name as employee_name, emp.email as email, emp.phone as phone, emp.work_id as work_id,
+        dep.id   as department_id,
+        dep.name as department_name,
+        sa.*
+        from employee emp
+        LEFT JOIN employee_salary_merge esm on emp.id = esm.employee_id
+        LEFT JOIN salary sa on esm.salary_id = sa.id
+        LEFT JOIN department dep on emp.department_id = dep.id
+        where emp.work_id = #{workId}
+    </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from salary
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-    <insert id="insert" parameterType="org.javaboy.vhr.model.Salary">
-    insert into salary (id, basicSalary, bonus, 
-      lunchSalary, trafficSalary, allSalary, 
-      pensionBase, pensionPer, createDate, 
-      medicalBase, medicalPer, accumulationFundBase, 
-      accumulationFundPer, name)
-    values (#{id,jdbcType=INTEGER}, #{basicSalary,jdbcType=INTEGER}, #{bonus,jdbcType=INTEGER}, 
-      #{lunchSalary,jdbcType=INTEGER}, #{trafficSalary,jdbcType=INTEGER}, #{allSalary,jdbcType=INTEGER}, 
-      #{pensionBase,jdbcType=INTEGER}, #{pensionPer,jdbcType=REAL}, #{createDate,jdbcType=TIMESTAMP}, 
-      #{medicalBase,jdbcType=INTEGER}, #{medicalPer,jdbcType=REAL}, #{accumulationFundBase,jdbcType=INTEGER}, 
-      #{accumulationFundPer,jdbcType=REAL}, #{name,jdbcType=VARCHAR})
-  </insert>
-    <insert id="insertSelective" parameterType="org.javaboy.vhr.model.Salary">
+        delete
+        from salary
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <insert id="insertSalary" parameterType="org.javaboy.vhr.model.InsertSalary">
         insert into salary
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                id,
+            <if test="name != null">
+                `name`,
             </if>
             <if test="basicSalary != null">
-                basicSalary,
+                basic_salary,
             </if>
             <if test="bonus != null">
                 bonus,
             </if>
             <if test="lunchSalary != null">
-                lunchSalary,
+                lunch_salary,
             </if>
             <if test="trafficSalary != null">
-                trafficSalary,
-            </if>
-            <if test="allSalary != null">
-                allSalary,
+                traffic_salary,
             </if>
             <if test="pensionBase != null">
-                pensionBase,
+                pension_base,
             </if>
             <if test="pensionPer != null">
-                pensionPer,
+                pension_per,
             </if>
             <if test="createDate != null">
-                createDate,
+                create_date,
             </if>
             <if test="medicalBase != null">
-                medicalBase,
+                medical_base,
             </if>
             <if test="medicalPer != null">
-                medicalPer,
+                medical_per,
             </if>
             <if test="accumulationFundBase != null">
-                accumulationFundBase,
+                accumulation_fund_base,
             </if>
             <if test="accumulationFundPer != null">
-                accumulationFundPer,
-            </if>
-            <if test="name != null">
-                name,
+                accumulation_fund_per,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                #{id,jdbcType=INTEGER},
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
             </if>
             <if test="basicSalary != null">
                 #{basicSalary,jdbcType=INTEGER},
@@ -110,14 +152,11 @@
             <if test="trafficSalary != null">
                 #{trafficSalary,jdbcType=INTEGER},
             </if>
-            <if test="allSalary != null">
-                #{allSalary,jdbcType=INTEGER},
-            </if>
             <if test="pensionBase != null">
                 #{pensionBase,jdbcType=INTEGER},
             </if>
             <if test="pensionPer != null">
-                #{pensionPer,jdbcType=REAL},
+                #{pensionPer,jdbcType=FLOAT},
             </if>
             <if test="createDate != null">
                 #{createDate,jdbcType=TIMESTAMP},
@@ -126,79 +165,56 @@
                 #{medicalBase,jdbcType=INTEGER},
             </if>
             <if test="medicalPer != null">
-                #{medicalPer,jdbcType=REAL},
+                #{medicalPer,jdbcType=FLOAT},
             </if>
             <if test="accumulationFundBase != null">
                 #{accumulationFundBase,jdbcType=INTEGER},
             </if>
             <if test="accumulationFundPer != null">
-                #{accumulationFundPer,jdbcType=REAL},
-            </if>
-            <if test="name != null">
-                #{name,jdbcType=VARCHAR},
+                #{accumulationFundPer,jdbcType=FLOAT},
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="org.javaboy.vhr.model.Salary">
+    <update id="updateByPrimaryKey" parameterType="org.javaboy.vhr.model.Salary">
         update salary
         <set>
             <if test="basicSalary != null">
-                basicSalary = #{basicSalary,jdbcType=INTEGER},
+                basic_salary = #{basicSalary,jdbcType=INTEGER},
             </if>
             <if test="bonus != null">
                 bonus = #{bonus,jdbcType=INTEGER},
             </if>
             <if test="lunchSalary != null">
-                lunchSalary = #{lunchSalary,jdbcType=INTEGER},
+                lunch_salary = #{lunchSalary,jdbcType=INTEGER},
             </if>
             <if test="trafficSalary != null">
-                trafficSalary = #{trafficSalary,jdbcType=INTEGER},
-            </if>
-            <if test="allSalary != null">
-                allSalary = #{allSalary,jdbcType=INTEGER},
+                traffic_salary = #{trafficSalary,jdbcType=INTEGER},
             </if>
             <if test="pensionBase != null">
-                pensionBase = #{pensionBase,jdbcType=INTEGER},
+                pension_base = #{pensionBase,jdbcType=INTEGER},
             </if>
             <if test="pensionPer != null">
-                pensionPer = #{pensionPer,jdbcType=REAL},
+                pension_per = #{pensionPer,jdbcType=FLOAT},
             </if>
             <if test="createDate != null">
-                createDate = #{createDate,jdbcType=TIMESTAMP},
+                create_date = #{createDate,jdbcType=TIMESTAMP},
             </if>
             <if test="medicalBase != null">
-                medicalBase = #{medicalBase,jdbcType=INTEGER},
+                medical_base = #{medicalBase,jdbcType=INTEGER},
             </if>
             <if test="medicalPer != null">
-                medicalPer = #{medicalPer,jdbcType=REAL},
+                medical_per = #{medicalPer,jdbcType=FLOAT},
             </if>
             <if test="accumulationFundBase != null">
-                accumulationFundBase = #{accumulationFundBase,jdbcType=INTEGER},
+                accumulation_fund_base = #{accumulationFundBase,jdbcType=INTEGER},
             </if>
             <if test="accumulationFundPer != null">
-                accumulationFundPer = #{accumulationFundPer,jdbcType=REAL},
+                accumulation_fund_per = #{accumulationFundPer,jdbcType=FLOAT},
             </if>
             <if test="name != null">
-                name = #{name,jdbcType=VARCHAR},
+                `name` = #{name,jdbcType=VARCHAR},
             </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
-    <update id="updateByPrimaryKey" parameterType="org.javaboy.vhr.model.Salary">
-    update salary
-    set basicSalary = #{basicSalary,jdbcType=INTEGER},
-      bonus = #{bonus,jdbcType=INTEGER},
-      lunchSalary = #{lunchSalary,jdbcType=INTEGER},
-      trafficSalary = #{trafficSalary,jdbcType=INTEGER},
-      allSalary = #{allSalary,jdbcType=INTEGER},
-      pensionBase = #{pensionBase,jdbcType=INTEGER},
-      pensionPer = #{pensionPer,jdbcType=REAL},
-      createDate = #{createDate,jdbcType=TIMESTAMP},
-      medicalBase = #{medicalBase,jdbcType=INTEGER},
-      medicalPer = #{medicalPer,jdbcType=REAL},
-      accumulationFundBase = #{accumulationFundBase,jdbcType=INTEGER},
-      accumulationFundPer = #{accumulationFundPer,jdbcType=REAL},
-      name = #{name,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
 </mapper>

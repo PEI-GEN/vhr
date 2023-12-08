@@ -1,45 +1,90 @@
 package org.javaboy.vhr.controller.salary;
 
+import org.javaboy.vhr.annotation.Log;
+import org.javaboy.vhr.model.InsertSalary;
 import org.javaboy.vhr.model.RespBean;
-import org.javaboy.vhr.model.Salary;
+import org.javaboy.vhr.model.UploadSalary;
 import org.javaboy.vhr.service.SalaryService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import javax.annotation.Resource;
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
+/**
+ * 工资账套信息
+ *
+ * @author 🍍
+ * @date 2023/10/1
+ */
 @RestController
-@RequestMapping("/salary/sob")
+@RequestMapping("/sal/sob")
+@Validated
 public class SalaryController {
-    @Autowired
-    SalaryService salaryService;
 
+    @Resource
+    private SalaryService salaryService;
+
+    /**
+     * 所有工资账套
+     */
     @GetMapping("/")
-    public List<Salary> getAllSalaries() {
-        return salaryService.getAllSalaries();
+    @Log("查询所有工资账套")
+    public RespBean findAllSalary() {
+        return RespBean.ok(salaryService.selectAllSalary());
     }
 
-    @PostMapping("/")
-    public RespBean addSalary(@RequestBody Salary salary) {
-        if (salaryService.addSalary(salary) == 1) {
-            return RespBean.ok("添加成功!");
+    /**
+     * 新增工资账套
+     */
+    @PutMapping("/add")
+    @Log("新增工资账套")
+    public RespBean add(@Valid @RequestBody InsertSalary insertSalary) {
+        if (salaryService.insert(insertSalary)) {
+            return RespBean.ok();
         }
-        return RespBean.error("添加失败!");
+        return RespBean.error();
     }
 
-    @DeleteMapping("/{id}")
-    public RespBean deleteSalaryById(@PathVariable Integer id) {
-        if (salaryService.deleteSalaryById(id) == 1) {
-            return RespBean.ok("删除成功！");
+    /**
+     * 删除工资账套
+     */
+    @DeleteMapping("/delete/{id}")
+    @Log("删除工资账套")
+    public RespBean remove(@Min(value = 1, message = "id 必须大于 0")
+                           @PathVariable("id") Integer id) {
+        if (salaryService.delete(id)) {
+            return RespBean.ok();
         }
-        return RespBean.error("删除失败！");
+        return RespBean.error();
     }
 
-    @PutMapping("/")
-    public RespBean updateSalaryById(@RequestBody Salary salary) {
-        if (salaryService.updateSalaryById(salary) == 1) {
-            return RespBean.ok("更新成功!");
+    /**
+     * 修改工资账套
+     */
+    @PutMapping("/modify")
+    @Log("修改工资账套")
+    public RespBean modify(@Valid @RequestBody UploadSalary uploadSalary) {
+        if (salaryService.update(uploadSalary)) {
+            return RespBean.ok();
         }
-        return RespBean.error("更新失败!");
+        return RespBean.error();
+    }
+
+    /**
+     * 批量工资账套删除
+     */
+    @DeleteMapping("/delete/many/")
+    @Log("批量工资账套删除")
+    public RespBean removeMany(@NotNull(message = "id 不能为空")
+                               @Size(min = 1, message = "id 长度必须大于 0")
+                               Integer[] ids) {
+        if (salaryService.deleteMany(ids)) {
+            return RespBean.ok();
+        }
+        return RespBean.error();
     }
 }
