@@ -16,7 +16,6 @@
     <modules>
         <module>vhrserver</module>
         <module>mailserver</module>
-        <module>common-redis</module>
     </modules>
 
 
