@@ -10,12 +10,14 @@
         <module name="mailserver" />
         <module name="vhr-web" />
         <module name="vhr-model" />
+        <module name="common-redis" />
         <module name="vhr-mapper" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="common-redis" options="-parameters" />
       <module name="mailserver" options="-parameters" />
       <module name="vhr-mapper" options="-parameters" />
       <module name="vhr-model" options="-parameters" />
