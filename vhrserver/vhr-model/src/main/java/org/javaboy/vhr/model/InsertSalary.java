@@ -1,6 +1,7 @@
 package org.javaboy.vhr.model;
 
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -11,6 +12,7 @@ import java.util.Date;
  * @date 2023/11/08
  */
 @Data
+@Slf4j
 public class InsertSalary {
     /**
      * 名称

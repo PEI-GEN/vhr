@@ -1,10 +1,12 @@
 package org.javaboy.vhr.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
 
+@Data
 public class Employee implements Serializable {
     private Integer id;
 
@@ -382,5 +384,17 @@ public class Employee implements Serializable {
 
     public void setWorkAge(Integer workAge) {
         this.workAge = workAge;
+    }
+
+    public Employee getPoliticsStatus() {
+        return null;
+    }
+
+    public double getWorkId() {
+        return 0;
+    }
+
+    public void setWorkId(String cellValue) {
+
     }
 }
