@@ -30,3 +30,16 @@ fastdfs:
 debug: true
 
 # 分页配置参数
+
+
+# 一些自定义配置
+custom:
+  config:
+#    # 需要做卷映射 (docker 映射到本地)
+#    docker_database_path: /var/log/mysql
+#    # 数据库服务器备份路径
+#    server_database_path: E:\todo_files\docker\mysql80\log
+#    # docker镜像名字
+#    docker_name: mysql80
+    # 数据库备份过期时间（秒）
+    backup_expire: 7200
