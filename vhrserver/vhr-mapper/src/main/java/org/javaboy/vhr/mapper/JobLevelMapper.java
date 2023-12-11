@@ -21,4 +21,7 @@ public interface JobLevelMapper {
     List<JobLevel> getAllJobLevels();
 
     Integer deleteJobLevelsByIds(@Param("ids") Integer[] ids);
+
+    List<JobLevel> selectAll();
+
 }

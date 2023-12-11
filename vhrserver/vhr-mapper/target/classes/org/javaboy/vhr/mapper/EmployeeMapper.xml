@@ -175,6 +175,12 @@
         from employee
         where id = #{id,jdbcType=INTEGER}
     </select>
+    <select id="selectByEmployeeByWorkId" resultType="org.javaboy.vhr.model.UploadEmployee">
+        select
+        <include refid="Base_Column_List"/>
+        from employee
+        where work_id = #{workId}
+    </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from employee
     where id = #{id,jdbcType=INTEGER}

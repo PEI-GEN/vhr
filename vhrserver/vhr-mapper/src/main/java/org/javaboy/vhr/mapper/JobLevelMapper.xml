@@ -26,7 +26,12 @@
     from joblevel
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    <select id="selectAll" resultType="org.javaboy.vhr.model.JobLevel">
+      select
+      <include refid="Base_Column_List"/>
+      from joblevel;
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from joblevel
     where id = #{id,jdbcType=INTEGER}
   </delete>

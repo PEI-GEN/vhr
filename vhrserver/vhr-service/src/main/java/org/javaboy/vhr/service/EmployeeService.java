@@ -1,10 +1,7 @@
 package org.javaboy.vhr.service;
 
 import org.javaboy.vhr.mapper.EmployeeMapper;
-import org.javaboy.vhr.model.Employee;
-import org.javaboy.vhr.model.MailConstants;
-import org.javaboy.vhr.model.MailSendLog;
-import org.javaboy.vhr.model.RespPageBean;
+import org.javaboy.vhr.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
@@ -108,5 +105,19 @@ public class EmployeeService {
 
     public Employee getEmployeeById(Integer empId) {
         return employeeMapper.getEmployeeById(empId);
+    }
+
+    public UploadEmployee selectEmployeeByWorkId(String workId) {
+        return employeeMapper.selectByEmployeeByWorkId(workId);
+    }
+
+    /**
+     * 修改员工
+     *
+     * @param uploadEmployee 员工信息
+     * @return 结果
+     */
+    public boolean update(UploadEmployee uploadEmployee) {
+        return employeeMapper.updateByPrimaryKey(uploadEmployee) == 1;
     }
 }

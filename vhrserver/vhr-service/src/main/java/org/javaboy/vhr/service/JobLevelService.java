@@ -43,4 +43,14 @@ public class JobLevelService {
     public Integer deleteJobLevelsByIds(Integer[] ids) {
         return jobLevelMapper.deleteJobLevelsByIds(ids);
     }
+
+    /**
+     * 查询所有职称等级
+     *
+     * @return 职称等级集合
+     */
+    public List<JobLevel> selectAll() {
+        return jobLevelMapper.selectAll();
+    }
+
 }
