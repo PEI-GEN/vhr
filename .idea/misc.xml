@@ -6,6 +6,7 @@
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/common-redis/pom.xml" />
+        <option value="$PROJECT_DIR$/vhrserver/common-redis/pom.xml" />
       </list>
     </option>
   </component>
