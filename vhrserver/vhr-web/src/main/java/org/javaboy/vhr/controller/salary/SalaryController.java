@@ -42,7 +42,7 @@ public class SalaryController {
      */
     @PutMapping("/add")
     @Log("新增工资账套")
-    public RespBean add(@Valid @RequestBody InsertSalary insertSalary) {
+    public RespBean add(@RequestBody InsertSalary insertSalary) {
         if (salaryService.insert(insertSalary)) {
             return RespBean.ok();
         }
@@ -67,7 +67,7 @@ public class SalaryController {
      */
     @PutMapping("/modify")
     @Log("修改工资账套")
-    public RespBean modify(@Valid @RequestBody UploadSalary uploadSalary) {
+    public RespBean modify(@RequestBody UploadSalary uploadSalary) {
         if (salaryService.update(uploadSalary)) {
             return RespBean.ok();
         }

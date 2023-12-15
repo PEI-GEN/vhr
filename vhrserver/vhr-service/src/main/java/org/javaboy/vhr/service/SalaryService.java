@@ -66,6 +66,6 @@ public class SalaryService {
     }
 
     public List<Salary> getAllSalaries() {
-        return null;
+        return salaryMapper.selectAll();
     }
 }

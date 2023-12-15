@@ -1,11 +1,7 @@
 package org.javaboy.vhr.utils;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.hssf.usermodel.HSSFDataFormat;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.*;
 import org.javaboy.vhr.model.*;
 import org.springframework.http.HttpHeaders;
@@ -274,7 +270,7 @@ public class ExportImportExcelUtil {
      * 导出员工工资表信息
      */
     public static ResponseEntity<byte[]> exportSalaryTable(List<SalaryTableView> salaryTableView) throws IOException {
-        ByteArrayOutputStream bass;
+        ByteArrayOutputStream bass = new ByteArrayOutputStream();;
         HttpHeaders headers;
         String[] titles = {
                 "员工名", "员工号", "部门名", "职称名", "工资", "罚款", "奖励",
@@ -293,7 +289,7 @@ public class ExportImportExcelUtil {
                 cell.setCellValue(title);
             }
 
-            XSSFCellStyle dataStyle = workbook.createCellStyle();
+//            XSSFCellStyle dataStyle = workbook.createCellStyle();
 //            dataStyle.setDataFormat(HSSFDataFormat.getBuiltinFormat("m/d/yy"));
             // 开始插入值
             for (int i = 0; i < salaryTableView.size(); i++) {
@@ -321,7 +317,7 @@ public class ExportImportExcelUtil {
                         new String("工资表.xlsx".getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1));
                 headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
                 workbook.write(bass);
-            } catch (IOException e) {
+            } catch (Exception e) {
                 log.debug("导出数据异常: {}", e.getMessage());
             }
         }

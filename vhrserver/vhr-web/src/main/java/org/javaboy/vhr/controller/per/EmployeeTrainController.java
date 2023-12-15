@@ -66,8 +66,7 @@ public class EmployeeTrainController {
      */
     @DeleteMapping("/delete/{id}")
     @Log("培训删除")
-    public RespBean removeOne(@Min(value = 1, message = "id不能小于1")
-                              @PathVariable("id") Integer id) {
+    public RespBean removeOne( @PathVariable("id") Integer id) {
         System.out.println(id);
         if (employeeTrainService.delete(id)) {
             return RespBean.ok();

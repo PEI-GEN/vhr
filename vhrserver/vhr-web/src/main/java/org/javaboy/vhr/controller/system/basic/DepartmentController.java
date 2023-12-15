@@ -1,16 +1,14 @@
 package org.javaboy.vhr.controller.system.basic;
 
 import org.javaboy.vhr.annotation.Log;
-import org.javaboy.vhr.model.DeleteRequestDepartment;
-import org.javaboy.vhr.model.InsertRequestDepartment;
-import org.javaboy.vhr.model.RespBean;
-import org.javaboy.vhr.model.UploadDepartment;
+import org.javaboy.vhr.model.*;
 import org.javaboy.vhr.service.DepartmentService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * 部门信息
@@ -31,8 +29,8 @@ public class DepartmentController {
      */
     @GetMapping("/root")
     @Log("查询所有部门")
-    public RespBean findDepartment() {
-        return RespBean.ok(departmentService.selectAllDepart(-1));
+    public List<Department> findDepartment() {
+        return departmentService.selectAllDepart(-1);
     }
 
     /**

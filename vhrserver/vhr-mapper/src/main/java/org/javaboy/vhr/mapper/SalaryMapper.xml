@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="org.javaboy.vhr.mapper.SalaryMapper">
     <sql id="column">
-        id, name, basicSalary, bonus, lunchSalary, trafficSalary, allSalary, pensionBase, pensionPer, createDate, medicalBase,
-            medicalPer, accumulationFundBase, accumulationFundPer
+        id, name, basic_salary, bonus, lunch_salary, traffic_salary, all_salary, pension_base, pension_per, create_date, medical_base,
+            medical_per, accumulation_fund_base, accumulation_fund_per
     </sql>
     <resultMap id="SalaryConfigViewMap" type="org.javaboy.vhr.model.SalaryConfigView">
         <result property="employeeId" column="employee_id"/>

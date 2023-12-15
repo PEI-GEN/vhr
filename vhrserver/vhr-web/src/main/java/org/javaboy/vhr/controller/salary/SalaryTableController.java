@@ -37,7 +37,7 @@ public class SalaryTableController {
     @Log("查询所有工资表")
     public RespBean findPage(@PathVariable("pageNum") Integer pageNum,
                              @PathVariable("pageSize") Integer pageSize,
-                             @Valid SalaryTableSearch salaryTableSearch) {
+                             @RequestBody SalaryTableSearch salaryTableSearch) {
         PageHelper.startPage(pageNum, pageSize);
         return RespBean.ok(new PageInfo<>(salaryTableService.selectAll(salaryTableSearch)));
     }
@@ -47,7 +47,7 @@ public class SalaryTableController {
      */
     @PostMapping("/export")
     @Log("导出员工的工资表")
-    public ResponseEntity<byte[]> exportSalaryTable(@Valid @RequestBody SalaryTableSearch salaryTableSearch) {
+    public ResponseEntity<byte[]> exportSalaryTable(@RequestBody SalaryTableSearch salaryTableSearch) {
         List<SalaryTableView> salaryTableViews = salaryTableService.selectAll(salaryTableSearch);
         try {
             return ExportImportExcelUtil.exportSalaryTable(salaryTableViews);

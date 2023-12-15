@@ -14,7 +14,7 @@
         <result property="name" column="name" />
         <collection property="children" ofType="org.javaboy.vhr.model.Department" select="selectByParentId" column="id"/>
     </resultMap>
-    <sql id="column">id, `name`, parentId, depPath, enabled, isParent</sql>
+    <sql id="column">id, `name`, `parentId`, depPath, enabled, isParent</sql>
     <select id="selectAll" resultMap="BaseResultMap">
         select
         <include refid="column"/>
@@ -35,7 +35,7 @@
         select
         <include refid="column"/>
         from department
-        where parent_id = #{id} and enabled = 1
+        where parentId = #{id} and enabled = 1
     </select>
     <select id="selectAllDepWithDisabled" resultMap="BaseResultMap">
         select

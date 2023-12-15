@@ -52,7 +52,7 @@ public class PerEcController {
      */
     @PutMapping("/modify")
     @Log("修改奖惩信息")
-    public RespBean modify(@Valid @RequestBody UploadEmployeeRewardPunishment uploadEmployeeRewardPunishment) {
+    public RespBean modify(@RequestBody UploadEmployeeRewardPunishment uploadEmployeeRewardPunishment) {
         if (employeeRewardPunishmentService.update(uploadEmployeeRewardPunishment)) {
             return RespBean.ok();
         }
