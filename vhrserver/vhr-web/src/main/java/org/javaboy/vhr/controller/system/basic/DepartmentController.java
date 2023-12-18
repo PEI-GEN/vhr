@@ -29,8 +29,8 @@ public class DepartmentController {
      */
     @GetMapping("/root")
     @Log("查询所有部门")
-    public List<Department> findDepartment() {
-        return departmentService.selectAllDepart(-1);
+    public RespBean findDepartment() {
+        return RespBean.ok(departmentService.selectAllDepart(-1));
     }
 
     /**

@@ -24,7 +24,7 @@
                (select count(id) from role)       as role_count
     </select>
     <select id="selectSalaryStatistics" resultType="org.javaboy.vhr.model.SalaryStatistics">
-        select name, allSalary as salary
+        select name, all_salary as salary
         from salary
     </select>
     <select id="selectByParentIdOnlyName" resultMap="departmentStruct">
