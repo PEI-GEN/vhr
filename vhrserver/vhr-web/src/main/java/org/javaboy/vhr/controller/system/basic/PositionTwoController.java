@@ -67,7 +67,7 @@ public class PositionTwoController {
      */
     @PutMapping("/add")
     @Log("新增职位")
-    public RespBean add(@Valid @RequestBody InsertPosition insertPosition) {
+    public RespBean add(@RequestBody InsertPosition insertPosition) {
         if (CheckUtil.isNotNull(positionTwoService.findByName(insertPosition.getName()))) {
             return RespBean.error("职位名称已存在");
         }
@@ -98,7 +98,7 @@ public class PositionTwoController {
      */
     @PutMapping("/modify")
     @Log("修改职位")
-    public RespBean modify(@Valid @RequestBody UploadPosition uploadPosition) {
+    public RespBean modify(@RequestBody UploadPosition uploadPosition) {
         if (positionTwoService.update(uploadPosition)) {
             return RespBean.ok();
         } else {
