@@ -54,7 +54,7 @@ public class JobNameController {
      */
     @PutMapping("/modify")
     @Log("修改职称等级")
-    public RespBean modify(@Valid @RequestBody UploadJobLevel uploadJobLevel) {
+    public RespBean modify(@RequestBody UploadJobLevel uploadJobLevel) {
         if (jobNameService.update(uploadJobLevel)) {
             return RespBean.ok();
         } else {
@@ -67,7 +67,7 @@ public class JobNameController {
      */
     @PutMapping("/add")
     @Log("新增职称等级")
-    public RespBean add(@Valid @RequestBody InsertJobLevel insertJobLevel) {
+    public RespBean add(@RequestBody InsertJobLevel insertJobLevel) {
         if (jobNameService.insert(insertJobLevel)) {
             return RespBean.ok();
         } else {
