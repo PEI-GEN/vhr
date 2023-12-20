@@ -1,6 +1,9 @@
 package org.javaboy.vhr.mapper;
 
+import org.javaboy.vhr.model.InsertRole;
+import org.javaboy.vhr.model.RightsBean;
 import org.javaboy.vhr.model.Role;
+import org.javaboy.vhr.model.UploadRole;
 
 import java.util.List;
 
@@ -15,7 +18,22 @@ public interface RoleMapper {
 
     int updateByPrimaryKeySelective(Role record);
 
-    int updateByPrimaryKey(Role record);
+    int updateByPrimaryKey(UploadRole record);
 
     List<Role> getAllRoles();
+
+    Role selectByName(String roleName);
+
+    List<Role> selectAllRole();
+
+    List<Integer> selectRightsByRoleId(Integer roleId);
+
+    int insertRole(InsertRole insertRole);
+
+
+    int deleteRightsByRoleId(Integer roleId);
+
+    int insertRightsByRoleId(RightsBean rightsBean);
+
+    int selectRightsCountByRoleId(Integer roleId);
 }

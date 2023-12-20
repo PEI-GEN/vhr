@@ -50,8 +50,8 @@ public class DepartmentController {
      * 删除部门
      */
     @Log("删除部门")
-    @DeleteMapping("/delete")
-    public RespBean remove(@Valid @RequestBody DeleteRequestDepartment deleteRequestDepartment) {
+    @PostMapping("/delete")
+    public RespBean remove(@RequestBody DeleteRequestDepartment deleteRequestDepartment) {
         if (departmentService.deleteDepartment(deleteRequestDepartment)) {
             return RespBean.ok();
         }
@@ -72,7 +72,7 @@ public class DepartmentController {
      */
     @PutMapping("/modify")
     @Log("修改部门")
-    public RespBean modify(@Valid @RequestBody UploadDepartment uploadDepartment) {
+    public RespBean modify(@RequestBody UploadDepartment uploadDepartment) {
         if (departmentService.update(uploadDepartment)) {
             return RespBean.ok();
         } else {

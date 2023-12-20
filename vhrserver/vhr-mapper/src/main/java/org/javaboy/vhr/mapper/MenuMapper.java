@@ -3,6 +3,7 @@ package org.javaboy.vhr.mapper;
 import org.javaboy.vhr.model.Menu;
 
 import java.util.List;
+import java.util.Set;
 
 public interface MenuMapper {
     int deleteByPrimaryKey(Integer id);
@@ -24,4 +25,8 @@ public interface MenuMapper {
     List<Menu> getAllMenus();
 
     List<Integer> getMidsByRid(Integer rid);
+
+    List<Menu> selectAllMenus();
+
+    Set<Integer> selectAllMenuIds();
 }

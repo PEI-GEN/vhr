@@ -71,6 +71,13 @@
     from menu
     where id = #{id,jdbcType=INTEGER}
   </select>
+    <select id="selectAllMenus" resultType="org.javaboy.vhr.model.Menu">
+      select m1.id, m1.name, m2.id as id2, m2.name as name2, m3.id as id3, m3.name as name3
+      from menu m1
+             inner join menu m2 on m1.id = m2.parentId
+             inner join menu m3 on m2.id = m3.parentId;
+    </select>
+  <select id="selectAllMenuIds" resultType="java.lang.Integer"></select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from menu
     where id = #{id,jdbcType=INTEGER}

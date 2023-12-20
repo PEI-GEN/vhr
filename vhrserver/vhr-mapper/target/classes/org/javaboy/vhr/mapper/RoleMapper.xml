@@ -18,10 +18,19 @@
     from role
     where id = #{id,jdbcType=INTEGER}
   </select>
+    <select id="selectByName" resultType="org.javaboy.vhr.model.Role"></select>
+  <select id="selectAllRole" resultType="org.javaboy.vhr.model.Role">
+    select
+    <include refid="Base_Column_List"/>
+    from role;
+  </select>
+  <select id="selectRightsByRoleId" resultType="java.lang.Integer"></select>
+  <select id="selectRightsCountByRoleId" resultType="java.lang.Integer"></select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from role
     where id = #{id,jdbcType=INTEGER}
   </delete>
+  <delete id="deleteRightsByRoleId"></delete>
   <insert id="insert" parameterType="org.javaboy.vhr.model.Role" >
     insert into role (id, name, nameZh
       )
@@ -53,6 +62,8 @@
       </if>
     </trim>
   </insert>
+  <insert id="insertRole"></insert>
+  <insert id="insertRightsByRoleId"></insert>
   <update id="updateByPrimaryKeySelective" parameterType="org.javaboy.vhr.model.Role" >
     update role
     <set >

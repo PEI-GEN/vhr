@@ -166,7 +166,7 @@ public class DepartmentService {
         if (!deleteByDepPath(deleteRequestDepartment.getParentDepPath())) {
             throw new BusinessException("删除路径失败");
         }
-        if (!noChildren(deleteRequestDepartment.getParentId())) {
+        if (noChildren(deleteRequestDepartment.getParentId())) {
             if (!update(new UploadDepartment()
                     .setId(deleteRequestDepartment.getParentId()).setIsParent(false))) {
                 throw new BusinessException("部门更新失败");

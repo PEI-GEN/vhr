@@ -61,4 +61,8 @@ public class MenuService {
         Integer result = menuRoleMapper.insertRecord(rid, mids);
         return result==mids.length;
     }
+
+    public List<Menu> selectAllMenu() {
+        return null;
+    }
 }

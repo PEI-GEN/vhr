@@ -34,6 +34,12 @@
             <artifactId>poi</artifactId>
             <version>4.1.2</version>
         </dependency>
+        <dependency>
+            <groupId>org.javaboy</groupId>
+            <artifactId>common-redis</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
 </project>
