@@ -1,5 +1,6 @@
 package org.javaboy.vhr.task;
 
+import lombok.extern.slf4j.Slf4j;
 import org.javaboy.vhr.model.Employee;
 import org.javaboy.vhr.model.MailConstants;
 import org.javaboy.vhr.model.MailSendLog;
@@ -15,6 +16,7 @@ import java.util.Date;
 import java.util.List;
 
 @Component
+@Slf4j
 public class MailSendTask {
     @Autowired
     MailSendLogService mailSendLogService;
@@ -22,7 +24,9 @@ public class MailSendTask {
     RabbitTemplate rabbitTemplate;
     @Autowired
     EmployeeService employeeService;
-    @Scheduled(cron = "0/10 * * * * ?")
+
+//    @Scheduled(cron = "0/10 * * * * ?")
+    @Scheduled(cron = "0 0 4 * * ?")
     public void mailResendTask() {
         List<MailSendLog> logs = mailSendLogService.getMailSendLogsByStatus();
         if (logs == null || logs.size() == 0) {

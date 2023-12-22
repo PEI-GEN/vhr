@@ -16,6 +16,7 @@
         <module>vhr-model</module>
         <module>vhr-service</module>
         <module>vhr-web</module>
+        <module>common-redis</module>
     </modules>
 
     <dependencies>

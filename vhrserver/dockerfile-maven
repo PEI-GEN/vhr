@@ -1,0 +1,9 @@
+FROM openjdk:8
+RUN mkdir -p /app
+# 设置工作目录
+WORKDIR /mydata
+# apt-get update && apt-get install -y iputils-ping;
+COPY surveyking-v1.5.1.jar /app/surveyking-v1.5.1.jar
+EXPOSE 8080
+# 设置容器启动时运行的命令
+CMD ["java", "-jar","/home/app/surveyking-v1.5.1.jar"]
